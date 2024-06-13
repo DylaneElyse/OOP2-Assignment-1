@@ -14,6 +14,14 @@ namespace ProblemDomain
         public string Color { get; set; }
         public decimal Price { get; set; }
 
+        public Dictionary<string, string> soundRatings = new Dictionary<string, string>
+        {
+            { "Qt", "Quietest" },
+            { "Qr", "Quieter" },
+            { "Qu", "Quiet" },
+            { "M", "Moderate" }
+        };
+
         protected Appliance(string itemNumber, string brand, int quantity, int wattage, string color, decimal price)
         {
             ItemNumber = itemNumber;
@@ -46,6 +54,15 @@ namespace ProblemDomain
 
         public override string ToString()
         {
+            /*
+            number of doors need to convert number to string for output.
+            
+            Current output:
+            Number of Doors: 3
+
+            Test output:
+            Number of Doors: Three Doors
+            */
             return base.ToString() + $"\nNumber of Doors: {NumberOfDoors}\nHeight: {Height}\nWidth: {Width}";
         }
     }
@@ -64,7 +81,14 @@ namespace ProblemDomain
 
         public override string ToString()
         {
-            return base.ToString() + $"\nGrade: {Grade}\nBattery Voltage: {BatteryVoltage}V";
+            string BatteryVoltageLH = $"{BatteryVoltage}V"; // backup output
+            if (BatteryVoltage == 18) {
+                BatteryVoltageLH = "Low";
+            } else if (BatteryVoltage == 24) {
+                BatteryVoltageLH = "High";
+            }
+
+            return base.ToString() + $"\nGrade: {Grade}\nBattery Voltage: {BatteryVoltageLH}";
         }
     }
 
@@ -100,7 +124,8 @@ namespace ProblemDomain
 
         public override string ToString()
         {
-            return base.ToString() + $"\nFeature: {Feature}\nSound Rating: {SoundRating}";
+            base.soundRatings.TryGetValue(SoundRating, out string soundRatingFull); // Changes short name (Qt) to long name (Quietest)
+            return base.ToString() + $"\nFeature: {Feature}\nSound Rating: {soundRatingFull}";
         }
     }
 
@@ -133,6 +158,7 @@ namespace ProblemDomain
                         Appliances.Add(new Microwave(itemNumber, parts[1], int.Parse(parts[2]), int.Parse(parts[3]), parts[4], decimal.Parse(parts[5]), double.Parse(parts[6]), parts[7]));
                         break;
                     case '4':
+                        // Does nothing...
                     case '5':
                         Appliances.Add(new Dishwasher(itemNumber, parts[1], int.Parse(parts[2]), int.Parse(parts[3]), parts[4], decimal.Parse(parts[5]), parts[6], parts[7]));
                         break;
@@ -182,22 +208,22 @@ namespace ProblemDomain
             switch (type)
             {
                 case 1:
-                    Console.WriteLine("Enter number of doors: 2 (double door), 3 (three doors) or 4 (four doors):");
+                    Console.Write("Enter number of doors: 2 (double door), 3 (three doors) or 4 (four doors): ");
                     int numberOfDoors = int.Parse(Console.ReadLine());
                     matchedAppliances = Appliances.OfType<Refrigerator>().Where(r => r.NumberOfDoors == numberOfDoors).Cast<Appliance>().ToList();
                     break;
                 case 2:
-                    Console.WriteLine("Enter battery voltage value. 18 V (low) or 24 V (high)");
+                    Console.Write("Enter battery voltage value. 18 V (low) or 24 V (high): ");
                     int batteryVoltage = int.Parse(Console.ReadLine());
                     matchedAppliances = Appliances.OfType<Vacuum>().Where(v => v.BatteryVoltage == batteryVoltage).Cast<Appliance>().ToList();
                     break;
                 case 3:
-                    Console.WriteLine("Enter room type: K (kitchen) or W (work site)");
+                    Console.Write("Enter room type: K (kitchen) or W (work site): ");
                     string roomType = Console.ReadLine();
                     matchedAppliances = Appliances.OfType<Microwave>().Where(m => m.RoomType.Equals(roomType, StringComparison.OrdinalIgnoreCase)).Cast<Appliance>().ToList();
                     break;
                 case 4:
-                    Console.WriteLine("Enter sound rating: Qt (Quietest), Qr (Quieter), Qu (Quiet), M (Moderate)");
+                    Console.Write("Enter sound rating: Qt (Quietest), Qr (Quieter), Qu (Quiet), M (Moderate): ");
                     string soundRating = Console.ReadLine();
                     matchedAppliances = Appliances.OfType<Dishwasher>().Where(d => d.SoundRating.Equals(soundRating, StringComparison.OrdinalIgnoreCase)).Cast<Appliance>().ToList();
                     break;

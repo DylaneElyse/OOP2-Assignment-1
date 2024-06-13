@@ -12,7 +12,7 @@ class Program
         while (true)
         {
             Console.WriteLine("Welcome to Modern Appliances!");
-            Console.WriteLine("How May We Assist You?");
+            Console.WriteLine("How may we assist you?");
             Console.WriteLine("1 – Check out appliance");
             Console.WriteLine("2 – Find appliances by brand");
             Console.WriteLine("3 – Display appliances by type");
@@ -24,7 +24,7 @@ class Program
             switch (option)
             {
                 case 1:
-                    Console.Write("Enter item number of an Appliance: ");
+                    Console.Write("Enter item number of an appliance: ");
                     string itemNumber = Console.ReadLine();
                     applianceManager.PurchaseAppliance(itemNumber);
                     break;
@@ -56,6 +56,8 @@ class Program
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
+
+            Console.WriteLine(); // Adds space before menu is printed again
         }
     }
 }

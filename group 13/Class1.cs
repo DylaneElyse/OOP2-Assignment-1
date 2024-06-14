@@ -112,7 +112,7 @@ namespace ProblemDomain
 
         public override string ToString()
         {
-            base.roomTypes.TryGetValue(roomType, out string roomTypeFull); // Changes short name (K) to long name (Kitchen)
+            base.roomTypes.TryGetValue(RoomType, out string roomTypeFull); // Changes short name (K) to long name (Kitchen)
             return base.ToString() + $"\nCapacity: {Capacity}\nRoom Type: {roomTypeFull}";
         }
     }

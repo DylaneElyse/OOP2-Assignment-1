@@ -56,11 +56,11 @@ namespace ProblemDomain
         {
             string NumberOfDoors_String = $"{NumberOfDoors}"; // Default
             if (NumberOfDoors == 2) {
-                NumberOfDoors_String = "double doors";
+                NumberOfDoors_String = "Double doors";
             } else if (NumberOfDoors == 3) {
-                NumberOfDoors_String = "three doors";
+                NumberOfDoors_String = "Three doors";
             } else if (NumberOfDoors == 4) {
-                NumberOfDoors_String = "four doors";
+                NumberOfDoors_String = "Four doors";
             }
 
             return base.ToString() + $"\nNumber of Doors: {NumberOfDoors_String}\nHeight: {Height}\nWidth: {Width}";
@@ -106,7 +106,14 @@ namespace ProblemDomain
 
         public override string ToString()
         {
-            return base.ToString() + $"\nCapacity: {Capacity}\nRoom Type: {RoomType}";
+            string RoomTypeString = RoomType; // Default
+            if (RoomType == 'K') {
+                RoomTypeString = "Kitchen";
+            } else if (RoomType == 'W') {
+                RoomTypeString = "Work Site";
+            }
+        
+            return base.ToString() + $"\nCapacity: {Capacity}\nRoom Type: {RoomTypeString}";
         }
     }
 

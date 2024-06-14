@@ -6,7 +6,7 @@ class Program
     static void Main()
     {
         var applianceManager = new ApplianceManager();
-        string filePath = "appliances (1).txt";
+        string filePath = "appliances.txt";
         applianceManager.LoadAppliances(filePath);
 
         while (true)

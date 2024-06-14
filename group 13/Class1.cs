@@ -54,16 +54,16 @@ namespace ProblemDomain
 
         public override string ToString()
         {
-            /*
-            number of doors need to convert number to string for output.
-            
-            Current output:
-            Number of Doors: 3
+            string NumberOfDoors_String = $"{NumberOfDoors}"; // Default
+            if (NumberOfDoors = 2) {
+                NumberOfDoors_String = "double doors";
+            } else if (NumberOfDoors = 3) {
+                NumberOfDoors_String = "three doors";
+            } else if (NumberOfDoors = 4) {
+                NumberOfDoors_String = "four doors";
+            }
 
-            Test output:
-            Number of Doors: Three Doors
-            */
-            return base.ToString() + $"\nNumber of Doors: {NumberOfDoors}\nHeight: {Height}\nWidth: {Width}";
+            return base.ToString() + $"\nNumber of Doors: {NumberOfDoors_String}\nHeight: {Height}\nWidth: {Width}";
         }
     }
 

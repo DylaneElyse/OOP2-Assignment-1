@@ -5,8 +5,10 @@ using System.Linq;
 
 namespace ProblemDomain
 {
+    // appliance class
     public abstract class Appliance
     {
+        // class properties
         public string ItemNumber { get; set; }
         public string Brand { get; set; }
         public int Quantity { get; set; }
@@ -14,6 +16,7 @@ namespace ProblemDomain
         public string Color { get; set; }
         public decimal Price { get; set; }
 
+        //dictionaries to display the proper outputs when required
         public Dictionary<string, string> soundRatings = new Dictionary<string, string>
         {
             { "Qt", "Quietest" },
@@ -28,6 +31,8 @@ namespace ProblemDomain
             { "W", "Work Site" }
         };
 
+        // default constructor and parameterized constructor
+        protected Appliance() { }
         protected Appliance(string itemNumber, string brand, int quantity, int wattage, string color, decimal price)
         {
             ItemNumber = itemNumber;
@@ -38,18 +43,23 @@ namespace ProblemDomain
             Price = price;
         }
 
+        // parent ToString method
         public override string ToString()
         {
             return $"Item Number: {ItemNumber}\nBrand: {Brand}\nQuantity: {Quantity}\nWattage: {Wattage}\nColor: {Color}\nPrice: {Price:C}";
         }
     }
 
+    // Refrigerator class derived from Appliance class
     public class Refrigerator : Appliance
     {
+        // Refrigerator properties
         public int NumberOfDoors { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
 
+        // default and parameterized constructors
+        public Refrigerator() { }
         public Refrigerator(string itemNumber, string brand, int quantity, int wattage, string color, decimal price, int numberOfDoors, int height, int width)
             : base(itemNumber, brand, quantity, wattage, color, price)
         {
@@ -58,6 +68,7 @@ namespace ProblemDomain
             Width = width;
         }
 
+        // ToString method for Refrigerator
         public override string ToString()
         {
             string NumberOfDoors_String = $"{NumberOfDoors}"; // Default
@@ -73,11 +84,15 @@ namespace ProblemDomain
         }
     }
 
+    // Vacuum class derived from Appliance class
     public class Vacuum : Appliance
     {
+        // Vacuum properties
         public string Grade { get; set; }
         public int BatteryVoltage { get; set; }
 
+        // default and parameterized constructors
+        public Vacuum() { }
         public Vacuum(string itemNumber, string brand, int quantity, int wattage, string color, decimal price, string grade, int batteryVoltage)
             : base(itemNumber, brand, quantity, wattage, color, price)
         {
@@ -85,6 +100,7 @@ namespace ProblemDomain
             BatteryVoltage = batteryVoltage;
         }
 
+        // ToString method
         public override string ToString()
         {
             string BatteryVoltageLH = $"{BatteryVoltage}V"; // backup output
@@ -98,11 +114,15 @@ namespace ProblemDomain
         }
     }
 
+    // Microwave class derived from Appliance class
     public class Microwave : Appliance
     {
+        // properties for Microwave
         public double Capacity { get; set; }
         public string RoomType { get; set; }
 
+        // default and parameterized constructors
+        public Microwave() { }
         public Microwave(string itemNumber, string brand, int quantity, int wattage, string color, decimal price, double capacity, string roomType)
             : base(itemNumber, brand, quantity, wattage, color, price)
         {
@@ -110,6 +130,7 @@ namespace ProblemDomain
             RoomType = roomType;
         }
 
+        // ToString method
         public override string ToString()
         {
             base.roomTypes.TryGetValue(RoomType, out string roomTypeFull); // Changes short name (K) to long name (Kitchen)
@@ -117,11 +138,15 @@ namespace ProblemDomain
         }
     }
 
+    // Dishwasher class derived from Appliance class
     public class Dishwasher : Appliance
     {
+        // properties for Dishwasher
         public string Feature { get; set; }
         public string SoundRating { get; set; }
 
+        // default and parameterized constructors
+        public Dishwasher() { }
         public Dishwasher(string itemNumber, string brand, int quantity, int wattage, string color, decimal price, string feature, string soundRating)
             : base(itemNumber, brand, quantity, wattage, color, price)
         {
@@ -129,6 +154,7 @@ namespace ProblemDomain
             SoundRating = soundRating;
         }
 
+        // ToString method
         public override string ToString()
         {
             base.soundRatings.TryGetValue(SoundRating, out string soundRatingFull); // Changes short name (Qt) to long name (Quietest)
@@ -136,23 +162,29 @@ namespace ProblemDomain
         }
     }
 
+    // ApplianceManager class to handle functions of the program
     public class ApplianceManager
     {
+        // creating empty list for Appliances
         public List<Appliance> Appliances { get; private set; }
 
+        // creates new appliance and adds it to the list
         public ApplianceManager()
         {
             Appliances = new List<Appliance>();
         }
 
+        // code section that reads a txt file, parses the information, creates new objects, and adds them to the list
         public void LoadAppliances(string filePath)
         {
+            // loop to iterate through each line of the file
             foreach (var line in File.ReadLines(filePath))
             {
                 var parts = line.Split(';');
                 var itemNumber = parts[0];
                 var firstDigit = itemNumber[0];
 
+                // switch case that determines based on the firstDigit which appliance the information needs to be added to
                 switch (firstDigit)
                 {
                     case '1':
@@ -165,7 +197,8 @@ namespace ProblemDomain
                         Appliances.Add(new Microwave(itemNumber, parts[1], int.Parse(parts[2]), int.Parse(parts[3]), parts[4], decimal.Parse(parts[5]), double.Parse(parts[6]), parts[7]));
                         break;
                     case '4':
-                        // Does nothing...
+                        Appliances.Add(new Dishwasher(itemNumber, parts[1], int.Parse(parts[2]), int.Parse(parts[3]), parts[4], decimal.Parse(parts[5]), parts[6], parts[7]));
+                        break;
                     case '5':
                         Appliances.Add(new Dishwasher(itemNumber, parts[1], int.Parse(parts[2]), int.Parse(parts[3]), parts[4], decimal.Parse(parts[5]), parts[6], parts[7]));
                         break;
@@ -173,9 +206,13 @@ namespace ProblemDomain
             }
         }
 
+        // appliance purchasing/check out method
         public void PurchaseAppliance(string itemNumber)
         {
+            // finds the proper appliance from the list based on the item number inputted by the user
             var appliance = Appliances.Find(a => a.ItemNumber == itemNumber);
+
+            // conditional statements that check the quality of the chosen item return a message based on the outcome
             if (appliance == null)
             {
                 Console.WriteLine("No appliances found with that item number.");
@@ -191,9 +228,13 @@ namespace ProblemDomain
             }
         }
 
+        // method to search for appliances by a specific brand
         public void SearchByBrand(string brand)
         {
+            // code that checks the inputted brand name against each appliance on the Appliances list and adds them to a separate list if the brand names match
             var matchedAppliances = Appliances.FindAll(a => a.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase));
+
+            // conditional statement to print a message based on if any matching appliances were found
             if (matchedAppliances.Count == 0)
             {
                 Console.WriteLine("No appliances found for the specified brand.");
@@ -208,10 +249,13 @@ namespace ProblemDomain
             }
         }
 
+        // method to display select appliances based on an inputted type
         public void DisplayAppliancesByType(int type)
         {
+            // creates new empty list to hold the found appliances
             List<Appliance> matchedAppliances = new List<Appliance>();
 
+            // switch case to search for appliances based on the inputted selection by the user
             switch (type)
             {
                 case 1:
@@ -239,6 +283,7 @@ namespace ProblemDomain
                     return;
             }
 
+            // conditional statement to return a message or appliance information based on if any appliances were found
             if (matchedAppliances.Count == 0)
             {
                 Console.WriteLine("No matching appliances found.");
@@ -253,6 +298,7 @@ namespace ProblemDomain
             }
         }
 
+        // method to display a random set of appliances
         public void DisplayRandomAppliances(int count)
         {
             var random = new Random();
@@ -265,6 +311,7 @@ namespace ProblemDomain
             }
         }
 
+        // method to save the appliances from the Appliances list into a txt file
         public void SaveAppliances(string filePath)
         {
             using (var writer = new StreamWriter(filePath))

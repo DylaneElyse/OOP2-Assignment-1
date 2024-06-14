@@ -5,12 +5,14 @@ class Program
 {
     static void Main()
     {
+        // code to read txt file, create objects and add them to a list.
         var applianceManager = new ApplianceManager();
         string filePath = "appliances.txt";
         applianceManager.LoadAppliances(filePath);
 
         while (true)
         {
+            // displays menu options and collects user input
             Console.WriteLine("Welcome to Modern Appliances!");
             Console.WriteLine("How may we assist you?");
             Console.WriteLine("1 – Check out appliance");
@@ -21,6 +23,7 @@ class Program
             Console.Write("Enter option: ");
             int option = int.Parse(Console.ReadLine());
 
+            // switch case to validate which menu option has been selected and calls the proper method
             switch (option)
             {
                 case 1:

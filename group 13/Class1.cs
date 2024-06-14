@@ -22,6 +22,12 @@ namespace ProblemDomain
             { "M", "Moderate" }
         };
 
+        public Dictionary<string, string> roomTypes = new Dictionary<string, string>
+        {
+            { "K", "Kitchen" },
+            { "W", "Work Site" }
+        };
+
         protected Appliance(string itemNumber, string brand, int quantity, int wattage, string color, decimal price)
         {
             ItemNumber = itemNumber;
@@ -106,14 +112,8 @@ namespace ProblemDomain
 
         public override string ToString()
         {
-            string RoomTypeString = RoomType; // Default
-            if (RoomType == 'K') {
-                RoomTypeString = "Kitchen";
-            } else if (RoomType == 'W') {
-                RoomTypeString = "Work Site";
-            }
-        
-            return base.ToString() + $"\nCapacity: {Capacity}\nRoom Type: {RoomTypeString}";
+            base.roomTypes.TryGetValue(roomType, out string roomTypeFull); // Changes short name (K) to long name (Kitchen)
+            return base.ToString() + $"\nCapacity: {Capacity}\nRoom Type: {roomTypeFull}";
         }
     }
 

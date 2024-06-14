@@ -55,11 +55,11 @@ namespace ProblemDomain
         public override string ToString()
         {
             string NumberOfDoors_String = $"{NumberOfDoors}"; // Default
-            if (NumberOfDoors = 2) {
+            if (NumberOfDoors == 2) {
                 NumberOfDoors_String = "double doors";
-            } else if (NumberOfDoors = 3) {
+            } else if (NumberOfDoors == 3) {
                 NumberOfDoors_String = "three doors";
-            } else if (NumberOfDoors = 4) {
+            } else if (NumberOfDoors == 4) {
                 NumberOfDoors_String = "four doors";
             }
 
